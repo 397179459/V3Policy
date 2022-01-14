@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>上传成功</title>
+</head>
+<body>
+<div>
+    <form action="download" method="GET" >
+        <table>
+            <tr>
+                <td>
+                    <text>{{ tfilename }}</text>
+                </td>
+
+            </tr>
+
+            <tr>
+                <td>
+                    <text>成功转成代码格式!</text>
+                </td>
+
+            </tr>
+
+            <tr>
+                <td>
+                    <a href="{{ url_for('download',ttfilename=tfileName) }}">点我(*^▽^*)下载</a>
+                </td>
+
+            </tr>
+            <tr>
+                <td>
+                    <a href="{{ url_for('index') }}">返回主界面</a>
+                </td>
+
+            </tr>
+        </table>
+    </form>
+</div>
+</body>
+</html>
