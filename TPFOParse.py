@@ -20,8 +20,7 @@ FactoryName = app.FACTORY
 ProductSpecName = app.PRODUCTSPEC
 oldPath = os.path.join(app.SERVER_DIR, app.tfilename)
 
-# firstDir = app.TARGET_DIR + '\\' + app.now
-firstDir = app.TARGET_DIR
+
 
 
 def processFlow():
@@ -161,6 +160,7 @@ def addCols(df, sheetName, newPRSCols):
     #     now = time.strftime("%Y%m%d%H%M%S", time.localtime())
     #     firstDir = pre + now
     #     os.mkdir(firstDir)
+    firstDir = app.TARGET_DIR
     newTPFOFileDir = firstDir + '\\' + sheetName + "TPFO"
     # 因为 Modeler 导入的时候对于文件名和sheet名很规范，所有这里采用不同·文件夹的方式输出
     os.mkdir(newTPFOFileDir)

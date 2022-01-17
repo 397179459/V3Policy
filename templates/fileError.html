@@ -1,26 +1,52 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>解码失败</title>
-</head>
-<body>
-<div>
-    <table>
-        <tr>
-            <td>
-                <text>请检查是否选择的文件是否正确，是否为解密文件</text>
-            </td>
+{% extends 'layout.html' %}
 
-        </tr>
+{% block title %}Policy转换异常{% endblock %}
 
-        <tr>
-            <td>
-                <a href="{{ url_for('index') }}">返回主界面</a>
-            </td>
+{% block content %}
 
-        </tr>
-    </table>
-</div>
-</body>
-</html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Title</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+        <style>
+            .success {
+                color: green
+            }
+
+
+        </style>
+    </head>
+    <body>
+    <br><br>
+    <body>
+    <div>
+        <table>
+            <tr>
+                <td>
+                    <text>请检查是否选择的文件是否正确，是否为解密文件</text>
+                </td>
+
+            </tr>
+
+            <tr>
+                <td>
+                    <a href="{{ url_for('index') }}">返回主界面</a>
+                </td>
+
+            </tr>
+        </table>
+    </div>
+    </body>
+
+
+{% endblock %}
+
+
+
+

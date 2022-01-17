@@ -1,6 +1,6 @@
 {% extends 'layout.html' %}
 
-{% block title %}Show files{% endblock %}
+{% block title %}V3 Policy{% endblock %}
 
 {% block content %}
 
@@ -8,31 +8,101 @@
         <meta charset="UTF-8">
         <title>Title</title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-        {#        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>#}
-        {#        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>#}
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-        {#        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>#}
-        <style>
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+
+        <script color="0,0,0" opacity="0.5" count="99" src="https://cdn.bootcss.com/canvas-nest.js/1.0.1/canvas-nest.js"
+                type="text/javascript" charset="utf-8"></script>
+
+        <style type="text/css">
+
+            .container-fluid {
+                font-size: 20px;
+            }
+
             .success {
                 color: green
+            }
+
+            .wrapper {
+                width: 600px;
+                height: 100px;
+                background-color: white;
+                border-radius: 20px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                box-shadow: 0 0 10px rgb(197, 184, 184);
+            }
+
+            .loading-mask {
+                display: none;
+                position: absolute;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                left: 0;
+                z-index: 999;
+                background-color: rgba(0, 0, 0, 0.5);
+            }
+
+            .loading-spinner {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+
+            svg path,
+            svg rect {
+                fill: #409eff;
+            }
+
+
+            .click {
+                width: 130px;
+                height: 40px;
+                background: #32b16bc5;
+                border-radius: 20px;
+                font-size: 22px;
+                font-weight: 400;
+                color: #FFFFFF;
+                line-height: 40px;
+                text-align: center;
+                letter-spacing: 1px;
+                cursor: pointer;
+                text-decoration: none;
+                transition: all .3s cubic-bezier(.645, .045, .355, 1);
+            }
+
+            .click:hover {
+                background: #32B16C;
+            }
+
+            #myfooter {
+                position: absolute;
+                left: 44%;
+                bottom: 0;
+                text-align: center;
             }
 
 
         </style>
     </head>
+
     <body>
-    <br><br>
 
     <div align="center">
-        <div class="container-fluid ">
+        <div class="container-fluid">
 
+            <h1 class="text-primary">V3 Policy 转换工具</h1>
 
-            <h5 class="text-primary">V3 Policy 转换工具</h5>
-            <p>V0019729 wanglei03@visionox.com</p>
-            <p>20220112 @Version 1.0 </p>
             <td>
-                请选择你需要转换的 Policy Excel 文件
+                请选择需要转换的 Policy Excel 文件
             </td>
             <hr>
             {% with messages = get_flashed_messages(with_categories=true) %}
@@ -53,18 +123,47 @@
                     <label><input name="RadioFactory" type="radio" value="PANEL"/>PANEL </label>
                 </p>
                 <p>
-                    ProductSpec：<input type="text" name="ProductSpec" id="ProductSpec" autocomplete="off" value="213123fdGDG">
+                    Product Spec：<input type="text" name="ProductSpec" id="ProductSpec" autocomplete="off"
+                                       placeholder="请输入产品Spec" value="123" style="width: 300px">
                 </p>
                 <p>
-                    <input type="file" name="file" autocomplete="off" class="btn btn-dark">
-                    <input type="submit" value="Submit" onclick="submitForm()" class="btn btn-success">
+                    <input type="file" name="file" autocomplete="off" class="btn btn-dark " style="width: 350px">
                 </p>
+                <P>
+                    <input type="submit" value="Submit" onclick="submitForm()" class="btn btn-success click">
+                </P>
             </form>
         </div>
     </div>
 
+
+    <div class="loading-mask">
+        <div class="loading-spinner">
+            <svg version=" 1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
+                 y="0px" width="40px" height="40px" viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;"
+                 xml:space="preserve">
+                <path fill="#000"
+                      d="M43.935,25.145c0-10.318-8.364-18.683-18.683-18.683c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615c8.072,0,14.615,6.543,14.615,14.615H43.935z">
+                    <animateTransform attributeType="xml" attributeName="transform" type="rotate" from="0 25 25"
+                                      to="360 25 25" dur="0.6s" repeatCount="indefinite"/>
+                </path>
+            </svg>
+        </div>
+    </div>
+    </body>
+
+    <div id="myfooter" style="font-size: 14px">
+        <p>V0019729   wanglei03@visionox.com</p>
+        <p>20220112   @Version 1.0 </p>
+    </div>
+
+
     <script>
         function submitForm() {
+            {#document.getElementById("over").style.display = "block";#}
+            {# document.getElementById("layou
+            t").style.display = "block";#}
+
 
             var radioChoseFlag = false;
             for (var i = 0; i < MyFrom.RadioFactory.length; i++) {
@@ -94,9 +193,17 @@
                 return;
             }
 
+            var dom = document.querySelector('.loading-mask');
+            dom.style.display = 'block';
+
+            setTimeout(() => {
+                dom.style.display = 'none';
+            }, 100000);
+
             MyFrom.method = "POST";
             {#MyFrom.action="/upload";#}
             MyFrom.Submit();
+
 
         }
 

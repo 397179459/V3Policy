@@ -1,41 +1,78 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>上传成功</title>
-</head>
-<body>
-<div>
-    <form action="download" method="GET" >
-        <table>
-            <tr>
-                <td>
-                    <text>{{ tfilename }}</text>
-                </td>
+{% extends 'layout.html' %}
 
-            </tr>
+{% block title %}Policy转换成功{% endblock %}
 
-            <tr>
-                <td>
-                    <text>成功转成代码格式!</text>
-                </td>
+{% block content %}
 
-            </tr>
+    <head>
+        <meta charset="UTF-8">
+        <title>Title</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
-            <tr>
-                <td>
-                    <a href="{{ url_for('download',ttfilename=tfileName) }}">点我(*^▽^*)下载</a>
-                </td>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-            </tr>
-            <tr>
-                <td>
-                    <a href="{{ url_for('index') }}">返回主界面</a>
-                </td>
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+        <style type="text/css">
 
-            </tr>
-        </table>
-    </form>
-</div>
-</body>
-</html>
+            .wrapper {
+                width: 600px;
+                height: 200px;
+
+                background-color: white;
+
+                border-radius: 20px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                box-shadow: 0 0 10px rgb(197, 184, 184);
+                margin: 0 auto;
+                text-align: center;
+                font-size: 20px;
+
+            }
+
+
+        </style>
+    </head>
+
+    <body>
+    <div class="wrapper">
+        <form action="download" method="GET">
+            <table>
+                <tr>
+                    <td>
+                        <text>{{ tfilename }}</text>
+                    </td>
+
+                </tr>
+
+                <tr>
+                    <td>
+                        <text>Policy文件转换成功!</text>
+                    </td>
+
+                </tr>
+
+                <tr>
+                    <td>
+                        <a href="{{ url_for('download',ttfilename=tfileName) }}">点我(*^▽^*)下载</a>
+                    </td>
+
+                </tr>
+                <tr>
+                    <td>
+                        <a href="{{ url_for('index') }}">返回主界面</a>
+                    </td>
+
+                </tr>
+            </table>
+        </form>
+    </div>
+    </body>
+
+
+{% endblock %}
+

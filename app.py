@@ -110,5 +110,23 @@ def download(ttfilename):
     return send_from_directory(directory=dir, path=ttfilename, as_attachment=True)
 
 
+@app.route('/files')
+def files():
+    files = []
+    for filename in os.listdir(TARGET_ZIP):
+        path = os.path.join(TARGET_ZIP, filename)
+        if os.path.isfile(path):
+            files.append(filename)
+
+    return render_template('showfiles.html', files=files)
+
+
+# download all files function
+@app.route("/files/<path:path>")
+def get_file(path):
+    """Download a file."""
+    return send_from_directory(TARGET_ZIP, path, as_attachment=True)
+
+
 if __name__ == '__main__':
     app.run()
