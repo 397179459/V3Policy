@@ -1,35 +1,30 @@
+'''
+@wanglei03  @V0019729
+这个文件是用来处理TPFO的，主要用到ProcessFlow，ReworkFlow，StripperFlow 都要用到，处理逻辑都大概类似
+'''
 import logging
 import os
 import zipfile
 
 from pandas import read_excel
 
-import app
+import policy
 import TFOMParse
 
 logger = logging.getLogger()
 # logger.setLevel(logging.INFO)
-logger.setLevel(logging.DEBUG)
-
-'''
-@wanglei03  @V0019729
-这个文件是用来处理TPFO的，主要用到ProcessFlow，ReworkFlow，StripperFlow 都要用到，处理逻辑都大概类似
-'''
-
-FactoryName = app.FACTORY
-ProductSpecName = app.PRODUCTSPEC
-oldPath = os.path.join(app.SERVER_DIR, app.tfilename)
+logger.setLevel(policy.logLevel)
 
 
-
-
-def processFlow():
+# 处理 ProcessFlow sheet
+def processFlow(oldPath):
     # 处理ProcessFlow
     logging.debug('===============  开始处理 ProcessFlow Sheet ===============')
     TPFOProUsecols = ['ProcessFlowName', 'StepID', 'PPID', 'EQID', 'BackupEQID', ]
     # TPFOProUsecols=['FactoryName', 'ProductSpecName', 'ProcessFlowName',
     #             'StepID', 'PPID', 'EQID', 'BackupEQID',]
     # op = oldPath.replace('\\', '//')
+
     dfProcess = read_excel(oldPath, sheet_name='ProcessFlow', usecols=TPFOProUsecols)
     dfP = dfProcess
 
@@ -74,7 +69,8 @@ def processFlow():
     logging.debug('===============  处理完成 ProcessFlow Sheet ===============\n')
 
 
-def ExcelTPFO(sheetName):
+# 处理 rework 和 stripper sheet
+def ExcelTPFO(oldPath, sheetName):
     logging.debug('===========  开始处理 {0} Sheet  ==========='.format(sheetName))
 
     #     TPFORSUsecols=['FactoryName', 'ProductSpecName', 'ProcessFlow', 'POName', 'EQID', 'BackupEQID', 'PPID',]
@@ -117,6 +113,7 @@ def ExcelTPFO(sheetName):
             logging.debug('## 没有 backup 设备')
             #         dfRSAllB = dfRSAllBNotN.rename({'BackupEQID':'EQID'})
             dfRSAll = dfRSAllM.reset_index(drop=True)
+    # 如果是空sheet，就是空数据
     else:
         dfRSAll = dfRS
 
@@ -124,24 +121,33 @@ def ExcelTPFO(sheetName):
     return dfRSAll
 
 
-def RSFlow():
+# 进入处理 rework 和stripper的主程序
+def RSFlow(oldPath):
     newRSColumns = {'ProcessFlow': 'processFlowName',
                     'POName': 'processOperationName', 'PPID': 'machineRecipeName', 'EQID': 'machineName', }
 
-    dfRAllNew = ExcelTPFO('ReworkFlow')
+    dfRAllNew = ExcelTPFO(oldPath, 'ReworkFlow')
     addCols(dfRAllNew, 'ReworkFlow', newRSColumns)
 
-    dfSAllNew = ExcelTPFO('StripperFlow')
+    dfSAllNew = ExcelTPFO(oldPath, 'StripperFlow')
     addCols(dfSAllNew, 'StripperFlow', newRSColumns)
 
 
+# 添加common的 column，都是一些默认的 version之类的
 def addCols(df, sheetName, newPRSCols):
     logging.debug('## 开始 添加默认值 column  ...')
 
+    # policy 获取的前端传的参数
+    FactoryName = policy.FACTORY
+    ProductSpecName = policy.PRODUCTSPEC
+
+    # 添加Factory 和 product spec
     df[['factoryName', 'productSpecName']] = df.apply(lambda x: (FactoryName, ProductSpecName), axis=1,
                                                       result_type='expand')
+    # 添加各种version，目前都是00001
     df[['productSpecVersion', 'processFlowVersion', 'processOperationVersion']] = df.apply(
         lambda x: ('00001', '00001', '00001',), axis=1, result_type='expand')
+    # 各种flag
     df[['checkLevel', 'rmsFlag', 'dispatchState']] = df.apply(lambda x: ('N', 'N', 'N',), axis=1, result_type='expand')
     df[['dispatchPriority', 'ecRecipeFlag', 'ecRecipeName', 'maskCycleTarget']] = df.apply(lambda x: ('', '', '', ''),
                                                                                            axis=1, result_type='expand')
@@ -150,6 +156,7 @@ def addCols(df, sheetName, newPRSCols):
     #               'StepID':'processOperationName','PPID':'machineRecipeName','EQID':'machineName',}
     df = df.rename(columns=newPRSCols)
 
+    # 标准的 column 位置
     stdTPFOColumns = ['factoryName', 'productSpecName', 'productSpecVersion', 'processFlowName', 'processFlowVersion',
                       'processOperationName', 'processOperationVersion', 'machineName', 'rollType', 'machineRecipeName',
                       'checkLevel', 'rmsFlag', 'dispatchState',
@@ -160,7 +167,7 @@ def addCols(df, sheetName, newPRSCols):
     #     now = time.strftime("%Y%m%d%H%M%S", time.localtime())
     #     firstDir = pre + now
     #     os.mkdir(firstDir)
-    firstDir = app.TARGET_DIR
+    firstDir = policy.TARGET_DIR
     newTPFOFileDir = firstDir + '\\' + sheetName + "TPFO"
     # 因为 Modeler 导入的时候对于文件名和sheet名很规范，所有这里采用不同·文件夹的方式输出
     os.mkdir(newTPFOFileDir)
@@ -169,8 +176,9 @@ def addCols(df, sheetName, newPRSCols):
     logging.debug("Success ！ %s 导出成功" % NewFile_dfTPFO)
 
 
-
+# 将转换之后的Excel转换成压缩包，以供下载
 def zipdir(path, ziph):
+    # 必须要这样写，要不然可能就丢失文件。缺点就是可能压缩后的文件深度比较深
     for root, dirs, files in os.walk(path):
         for file in files:
             ziph.write(os.path.join(root, file))
@@ -178,16 +186,9 @@ def zipdir(path, ziph):
 
 
 def zip():
-    sourceFile = app.FIRST_DIR
-    # sourceFile = firstDir
-    zipFileName = '{0}.zip'.format(app.now)
-
-    # targetZip = app.TARGET_ZIP + '\\'+ zipFileName
-    # zipf = zipfile.ZipFile(targetZip, 'w', zipfile.ZIP_DEFLATED)
-    # zipdir(sourceFile, zipf)
-    # zipf.close()
-
-    targetZip = app.TARGET_ZIP + '\\'+ zipFileName
+    sourceFile = policy.FIRST_DIR
+    zipFileName = '{0}.zip'.format(policy.now)
+    targetZip = policy.TARGET_ZIP + '\\' + zipFileName
     zipfdownload = zipfile.ZipFile(targetZip, 'w', zipfile.ZIP_DEFLATED)
     zipdir(sourceFile, zipfdownload)
     zipfdownload.close()
@@ -195,14 +196,18 @@ def zip():
     return zipFileName
 
 
-
-def main():
+# 所有处理程序的入口
+def main(oldPath):
     logging.debug('## 开始 读取{0} .......'.format(oldPath))
     # os.mkdir(firstDir)
-    processFlow()
-    RSFlow()
+    # 先单独处理ProcessFlow
+    processFlow(oldPath)
+    # 再处理 rework 和stripper sheet
+    RSFlow(oldPath)
+    # 转换TFOM，这一过程最费时
     TFOMParse.main(oldPath)
-
+    # 压缩转换后的文件
     zipFile = zip()
 
+    # 返回压缩后的zip文件名，下载页面需要用到
     return zipFile

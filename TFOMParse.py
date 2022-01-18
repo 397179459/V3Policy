@@ -4,18 +4,16 @@
 '''
 import logging
 import os
-
 import pandas as pd
-
 from pandas import read_excel
-import app
-
+import policy
 
 logger = logging.getLogger()
 # logger.setLevel(logging.INFO)
-logger.setLevel(logging.DEBUG)
+logger.setLevel(policy.logLevel)
 
 
+# 处理TFOM的主程序
 def main(fileAbsPath):
     logging.debug('## 开始 读取{0} .......'.format(fileAbsPath))
     # TFOM 需要用到的字段，要求Excel里面的字段必须是这个名字，大小写，空格之类的严格遵守
@@ -58,7 +56,6 @@ def main(fileAbsPath):
     logging.debug('## 开始 拆分主站点多行设备 ...')
     dfMPMain = dfMPNoR.drop(['NEWEQID'], axis=1).join(
         dfMPNoR['NEWEQID'].str.split('\n', expand=True).stack().reset_index(level=1, drop=True).rename('EQ'))
-
 
     logging.debug('## 开始 找所有主站点的行号，并去重 ...')
     # 找到所有的 main operation 的行号，为了下一步sampling的进出operation准备
@@ -136,7 +133,6 @@ def main(fileAbsPath):
         df.at[sl[i], 'processOpertionName'] = fromMainOper
         df.at[sl[i], 'returnOperationName'] = toMainOper
 
-
     logging.debug('## 开始 对多行main和sampling做笛卡尔组合...')
     dfm = df[df["Category1"] == 'Main']
 
@@ -157,14 +153,13 @@ def main(fileAbsPath):
     dfms = dfms[stdl]
 
     logging.debug('## 开始 添加 Version column ...')
-    dfms[['factoryName', 'productSpecName']] = dfms.apply(lambda x: (app.FACTORY, app.PRODUCTSPEC), axis=1,
+    dfms[['factoryName', 'productSpecName']] = dfms.apply(lambda x: (policy.FACTORY, policy.PRODUCTSPEC), axis=1,
                                                           result_type='expand')
     dfms[['processFlowVersion', 'processOperationVersion', 'toProcessFlowVersion', 'toProcessOperationVersion',
           'returnOperationVer']] = dfms.apply(lambda x: ('00001', '00001', '00001', '00001', '00001',), axis=1,
                                               result_type='expand')
     # dfms[['checkLevel','rmsFlag', 'dispatchState']]=dfPAllNew.apply(lambda x:('N','N', 'N',),axis=1,result_type='expand')
     # dfms[['dispatchPriority','ecRecipeFlag', 'ecRecipeName', 'maskCycleTarget']]=dfPAllNew.apply(lambda x:('','', '', ''),axis=1,result_type='expand')
-
 
     logging.debug('## 开始 处理 FlowPriority ...')
     dfms['flowPriority'] = dfms.groupby(['processOperationName', 'machineName'], axis=0)['rn'].rank(ascending=True)
@@ -180,7 +175,7 @@ def main(fileAbsPath):
     dfms = dfms[stdColumns]
     # dfms
 
-    newTFOMFileDir = app.TARGET_DIR + "\\TFOM"
+    newTFOMFileDir = policy.TARGET_DIR + "\\TFOM"
     # 因为 Modeler 导入的时候对于文件名和sheet名很规范，所有这里采用不同文件夹的方式输出
     os.mkdir(newTFOMFileDir)
     NewFile_dfTFOM = newTFOMFileDir + '\\' + "TFOM.xls"

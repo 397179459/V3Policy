@@ -8,45 +8,50 @@
         <meta charset="UTF-8">
         <title>Title</title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-        <style>
-            .success {
-                color: green
-            }
+        <style type="text/css">
 
+            .wrapper {
+                width: 1300px;
+                height: 400px;
+                background-color: white;
+                border-radius: 20px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                box-shadow: 0 0 10px rgb(197, 184, 184);
+                margin: 0 auto;
+                text-align: center;
+                font-size: 20px;
+            }
 
         </style>
     </head>
     <body>
     <br><br>
     <body>
-    <div>
+    <div class="wrapper" style="font-size: 20px">
         <table>
             <tr>
                 <td>
-                    <text>请检查是否选择的文件是否正确，是否为解密文件</text>
+                    <text>{{ errorMsg }}</text>
                 </td>
-
             </tr>
-
+            <tr>
+                <td>
+                    <text>请检查是否选择的文件是否正确，格式或者字段内容是否正确</text>
+                </td>
+            </tr>
             <tr>
                 <td>
                     <a href="{{ url_for('index') }}">返回主界面</a>
                 </td>
-
             </tr>
         </table>
     </div>
     </body>
 
-
 {% endblock %}
-
-
-
-

@@ -8,7 +8,6 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
         <link rel="stylesheet" href="http://cdn.datatables.net/1.10.2/css/jquery.dataTables.min.css">
         <script type="text/javascript" src="http://cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js"></script>
-
     </head>
     <br><br>
     <h2 align="center">List Of Files To Download </h2>
@@ -20,7 +19,6 @@
             <tr>
                 <th>Files Names</th>
                 <th>Download files</th>
-
             </tr>
             </thead>
             <tbody>
@@ -28,8 +26,8 @@
                 <tr>
                     <td>{{ file }}</td>
                     <td><a href={{ url_for('get_file' ,path=file) }}>Download </a></td>
-
                 </tr>
+
             {% endfor %}
 
             </tbody>
@@ -41,8 +39,6 @@
             $('#myTable').dataTable();
         });
 
-
     </script>
-
 
 {% endblock %}

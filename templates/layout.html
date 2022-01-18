@@ -5,17 +5,16 @@
     <title>{% block title %}{% endblock %}</title>
     <link rel="icon" href="../static/imgs/emobile_2022-01-17_17-35-17.png" type="image/x-icon">
     {#        在网页标题左侧显示图标#}
-{#    <link rel="shortcut icon" href="../static/imgs/emobile_2022-01-17_17-35-17.png" type="image/x-icon">#}
+    {#    <link rel="shortcut icon" href="../static/imgs/emobile_2022-01-17_17-35-17.png" type="image/x-icon">#}
     {#        在收藏夹显示图标#}
 </head>
-<body>
 
+<body>
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 
-    <div class="collapse navbar-collapse" id="navbarText">
+    <div class="collapse navbar-collapse" id="navbarText" style="font-size: 20px">
         <ul class="navbar-nav mr-auto">
-
             <li class="nav-item">
                 <a class="nav-link" href="{{ url_for('index') }}">Upload file</a>
             </li>
@@ -23,17 +22,13 @@
                 <a class="nav-link" href="{{ url_for('files') }}">可下载的文件</a>
             </li>
         </ul>
-
     </div>
 </nav>
 
 <div class="content">
     {% block content %}{% endblock %}
 </div>
+
 </body>
+
 </html>
-
-
-
-
-

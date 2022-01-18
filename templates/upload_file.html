@@ -8,16 +8,12 @@
         <meta charset="UTF-8">
         <title>Title</title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-
         <script color="0,0,0" opacity="0.5" count="99" src="https://cdn.bootcss.com/canvas-nest.js/1.0.1/canvas-nest.js"
                 type="text/javascript" charset="utf-8"></script>
-
         <style type="text/css">
 
             .container-fluid {
@@ -62,7 +58,6 @@
                 fill: #409eff;
             }
 
-
             .click {
                 width: 130px;
                 height: 40px;
@@ -89,7 +84,6 @@
                 bottom: 0;
                 text-align: center;
             }
-
 
         </style>
     </head>
@@ -124,7 +118,7 @@
                 </p>
                 <p>
                     Product Spec：<input type="text" name="ProductSpec" id="ProductSpec" autocomplete="off"
-                                       placeholder="请输入产品Spec" value="123" style="width: 300px">
+                                        placeholder="请输入产品Spec" style="width: 300px">
                 </p>
                 <p>
                     <input type="file" name="file" autocomplete="off" class="btn btn-dark " style="width: 350px">
@@ -142,28 +136,24 @@
             <svg version=" 1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
                  y="0px" width="40px" height="40px" viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;"
                  xml:space="preserve">
-                <path fill="#000"
-                      d="M43.935,25.145c0-10.318-8.364-18.683-18.683-18.683c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615c8.072,0,14.615,6.543,14.615,14.615H43.935z">
-                    <animateTransform attributeType="xml" attributeName="transform" type="rotate" from="0 25 25"
-                                      to="360 25 25" dur="0.6s" repeatCount="indefinite"/>
-                </path>
-            </svg>
+            <path fill="#000"
+                  d="M43.935,25.145c0-10.318-8.364-18.683-18.683-18.683c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615c8.072,0,14.615,6.543,14.615,14.615H43.935z">
+                <animateTransform attributeType="xml" attributeName="transform" type="rotate" from="0 25 25"
+                                  to="360 25 25" dur="0.6s" repeatCount="indefinite"/>
+            </path>
+        </svg>
         </div>
     </div>
     </body>
 
     <div id="myfooter" style="font-size: 14px">
-        <p>V0019729   wanglei03@visionox.com</p>
-        <p>20220112   @Version 1.0 </p>
+        <p>V0019729 wanglei03@visionox.com</p>
+        <p>20220112 @Version 1.0 </p>
     </div>
 
 
     <script>
         function submitForm() {
-            {#document.getElementById("over").style.display = "block";#}
-            {# document.getElementById("layou
-            t").style.display = "block";#}
-
 
             var radioChoseFlag = false;
             for (var i = 0; i < MyFrom.RadioFactory.length; i++) {
@@ -177,7 +167,6 @@
                 {#MyFrom.RadioFactory.focus();#}
                 return;
             }
-
 
             var spec = MyFrom.ProductSpec.value;
             if (spec == "" || spec == null) {
@@ -193,6 +182,7 @@
                 return;
             }
 
+            {#点击提交之后显示遮盖层，100s之后自动关闭，防止多次提交#}
             var dom = document.querySelector('.loading-mask');
             dom.style.display = 'block';
 
@@ -204,11 +194,8 @@
             {#MyFrom.action="/upload";#}
             MyFrom.Submit();
 
-
         }
 
-
     </script>
-
 
 {% endblock %}
