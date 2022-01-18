@@ -13,7 +13,7 @@ logger.setLevel(logLevel)
 
 ABS_PATH = os.path.abspath('.')
 # 输出的zip文件夹，有一个show file界面需要展示这个目录
-TARGET_ZIP = ABS_PATH + r'\PolicyFile\ZipSuccessPolicy'
+TARGET_ZIP = ABS_PATH + r'/PolicyFile/ZipSuccessPolicy'
 
 # 上传选择文件，限制的文件后缀
 ALLOW_EXTENSIONS = set(['xlsx', 'xls', 'csv'])
@@ -52,10 +52,10 @@ def upload_file():
         now = datetime.datetime.now().strftime('%Y%m%d%H%M%S')
 
         # 先创建时间戳文件夹，，再依次创建policy原档，和转换之后存的位置，后期删除和归档方便
-        FIRST_DIR = ABS_PATH + r'\PolicyFile\{0}'.format(now)
+        FIRST_DIR = ABS_PATH + r'/PolicyFile/{0}'.format(now)
         # UPLOAD_DIR = FIRST_DIR + '\SourcePolicy'
-        SERVER_DIR = FIRST_DIR + '\ServerPolicy'
-        TARGET_DIR = FIRST_DIR + '\TargetPolicy'
+        SERVER_DIR = FIRST_DIR + '/ServerPolicy'
+        TARGET_DIR = FIRST_DIR + '/TargetPolicy'
         # TARGET_ZIP = FIRST_DIR + '\ZipPolicy'
 
         os.mkdir(FIRST_DIR)

@@ -168,10 +168,10 @@ def addCols(df, sheetName, newPRSCols):
     #     firstDir = pre + now
     #     os.mkdir(firstDir)
     firstDir = policy.TARGET_DIR
-    newTPFOFileDir = firstDir + '\\' + sheetName + "TPFO"
+    newTPFOFileDir = firstDir + '//' + sheetName + "TPFO"
     # 因为 Modeler 导入的时候对于文件名和sheet名很规范，所有这里采用不同·文件夹的方式输出
     os.mkdir(newTPFOFileDir)
-    NewFile_dfTPFO = newTPFOFileDir + '\\' + "TPFO.xls"
+    NewFile_dfTPFO = newTPFOFileDir + '//' + "TPFO.xls"
     df.to_excel(NewFile_dfTPFO, sheet_name='Machine', index=False)
     logging.debug("Success ！ %s 导出成功" % NewFile_dfTPFO)
 
@@ -188,7 +188,7 @@ def zipdir(path, ziph):
 def zip():
     sourceFile = policy.FIRST_DIR
     zipFileName = '{0}.zip'.format(policy.now)
-    targetZip = policy.TARGET_ZIP + '\\' + zipFileName
+    targetZip = policy.TARGET_ZIP + '//' + zipFileName
     zipfdownload = zipfile.ZipFile(targetZip, 'w', zipfile.ZIP_DEFLATED)
     zipdir(sourceFile, zipfdownload)
     zipfdownload.close()

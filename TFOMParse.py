@@ -175,9 +175,9 @@ def main(fileAbsPath):
     dfms = dfms[stdColumns]
     # dfms
 
-    newTFOMFileDir = policy.TARGET_DIR + "\\TFOM"
+    newTFOMFileDir = policy.TARGET_DIR + "//TFOM"
     # 因为 Modeler 导入的时候对于文件名和sheet名很规范，所有这里采用不同文件夹的方式输出
     os.mkdir(newTFOMFileDir)
-    NewFile_dfTFOM = newTFOMFileDir + '\\' + "TFOM.xls"
+    NewFile_dfTFOM = newTFOMFileDir + '//' + "TFOM.xls"
     dfms.to_excel(NewFile_dfTFOM, sheet_name='Sampling', index=False)
     logging.debug("Success ！ %s 导出成功" % NewFile_dfTFOM)
